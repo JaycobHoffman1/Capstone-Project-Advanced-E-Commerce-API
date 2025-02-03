@@ -35,3 +35,8 @@ def save(order_data):
             session.refresh(product)
 
         return new_order
+    
+def find_by_id(id):
+    query = select(Order).join(Customer).where(Customer.id == Order.customer_id).filter_by(id=id)
+    order = db.session.execute(query).scalar_one_or_none()
+    return order

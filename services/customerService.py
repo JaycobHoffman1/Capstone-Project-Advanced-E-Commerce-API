@@ -29,3 +29,13 @@ def find_all():
     query = select(Customer)
     customers = db.session.execute(query).scalars().all()
     return customers
+
+def find_customers_gmail():
+    query = select(Customer).where(Customer.email.like('%gmail%'))
+    customers = db.session.execute(query).scalars().all()
+
+    return customers
+
+def find_all_pagination(page=1, per_page=10):
+    customers = db.paginate(select(Customer), page=page, per_page=per_page)
+    return customers

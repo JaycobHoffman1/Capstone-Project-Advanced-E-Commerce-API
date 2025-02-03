@@ -7,6 +7,14 @@ class OrderSchema(ma.Schema):
     customer_id = fields.Integer(required=True)
     products = fields.Nested('ProductSchemaId', many=True) # For handling multiple products
 
+class OrderSchemaCustomer(ma.Schema):
+    id = fields.Integer(required=False)
+    date = fields.Date(required=True)
+    customer = fields.Nested('CustomerSchema')
+    products = fields.Nested('ProductSchema', many=True) # For handling multiple products
+
+order_schema_customer = OrderSchemaCustomer()
+
 # Create an instance of the OrderSchema
 order_schema = OrderSchema()
 orders_schema = OrderSchema(many=True) # For handling multiple orders

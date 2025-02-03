@@ -8,4 +8,4 @@ class CustomerAccount(Base):
     password: Mapped[str] = mapped_column(db.String(255), nullable=False)
     customer_id: Mapped[int] = mapped_column(db.ForeignKey('Customers.id'))
     # One-to-one: CustomerAccount and Customer
-    customer: Mapped['Customer'] = db.relationship(back_populates='customer_account')
+    customer: Mapped['Customer'] = db.relationship(back_populates='customer_account', lazy='select')
