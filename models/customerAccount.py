@@ -1,5 +1,6 @@
 from database import db, Base
 from sqlalchemy.orm import Mapped, mapped_column
+from typing import List
 
 class CustomerAccount(Base):
     __tablename__ = 'Customer_Accounts'
@@ -9,3 +10,5 @@ class CustomerAccount(Base):
     customer_id: Mapped[int] = mapped_column(db.ForeignKey('Customers.id'))
     # One-to-one: CustomerAccount and Customer
     customer: Mapped['Customer'] = db.relationship(back_populates='customer_account', lazy='select')
+    # Many-to-many: Roles and CustomerAccount with no back_populates
+    roles: Mapped[List['Role']] = db.relationship(secondary='Customer_Management_Roles')

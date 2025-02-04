@@ -3,6 +3,7 @@ from models.schemas.customerSchema import customer_schema, customers_schema
 from services import customerService
 from marshmallow import ValidationError
 from caching import cache
+from utils.util import token_required, role_required
 
 def save():
     try:
@@ -18,7 +19,9 @@ def save():
     else:
         return jsonify({ 'message': 'Fallback method error activated', 'body': customer_data }), 400
     
-@cache.cached(timeout=60)
+@cache.cached(timeout=1)
+@role_required('admin')
+@token_required
 def find_all():
     customers = customerService.find_all()
     return customers_schema.jsonify(customers), 200

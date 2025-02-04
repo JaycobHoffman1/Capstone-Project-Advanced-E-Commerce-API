@@ -4,12 +4,16 @@ from schema import ma
 from limiter import limiter
 from caching import cache
 from sqlalchemy.orm import Session
+from werkzeug.security import generate_password_hash
+from flask_cors import CORS
 
 from models.customer import Customer
 from models.customerAccount import CustomerAccount
 from models.order import Order
 from models.product import Product
 from models.orderProduct import order_product
+from models.role import Role
+from models.customerManagementRole import CustomerManagementRole
 
 from routes.customerBP import customer_blueprint
 from routes.productBP import product_blueprint
@@ -43,13 +47,35 @@ def init_customers_info_data():
             ]
 
             customersAccounts = [
-                CustomerAccount(username='ctm1', password='password1', customer_id=1),
-                CustomerAccount(username='ctm2', password='password2', customer_id=2),
-                CustomerAccount(username='ctm3', password='password3', customer_id=3)
+                CustomerAccount(username='ctm1', password=generate_password_hash('password1'), customer_id=1),
+                CustomerAccount(username='ctm2', password=generate_password_hash('password2'), customer_id=2),
+                CustomerAccount(username='ctm3', password=generate_password_hash('password3'), customer_id=3)
             ]
 
             session.add_all(customers)
             session.add_all(customersAccounts)
+
+def init_roles_data():
+    with Session(db.engine) as session:
+        with session.begin():
+            roles = [
+                Role(role_name='admin'),
+                Role(role_name='user'),
+                Role(role_name='guest')
+            ]
+
+            session.add_all(roles)
+
+def init_roles_customers_data():
+    with Session(db.engine) as session:
+        with session.begin():
+            roles_customers = [
+                CustomerManagementRole(customer_management_id=1, role_id=1),
+                CustomerManagementRole(customer_management_id=2, role_id=2),
+                CustomerManagementRole(customer_management_id=2, role_id=3)
+            ]
+
+            session.add_all(roles_customers)
 
 def configure_rate_limit():
     limiter.limit('100 per day')(customer_blueprint)
@@ -64,5 +90,7 @@ if __name__ == '__main__':
         db.drop_all()
         db.create_all()
         init_customers_info_data()
+        init_roles_data()
+        init_roles_customers_data()
 
     app.run(debug=True)
