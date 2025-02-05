@@ -1,0 +1,146 @@
+swagger: '2.0'
+info:
+  title: 'Advanced E-commerce API'
+  description: 'This is an API to manage an E-commerce application'
+  version: '1.0.0'
+host: '127.0.0.1:5000'
+schemes:
+  - 'http'
+consumes:
+  - 'application/json'
+produces:
+  - 'application/json'
+securityDefinitions:
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
+paths:
+  /accounts/login:
+    post:
+      tags:
+        - 'accounts'
+      summary: 'Login endpoint'
+      description: 'Endpoint for user authentication'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'Credentials for login'
+          required: true
+          schema:
+            $ref: '#/definitions/LoginCredentials'
+      responses:
+        200:
+          description: 'Login successful'
+          schema:
+            $ref: '#/definitions/LoginResponse'
+          examples:
+            application/json:
+              value:
+                auth_token: 'example_auth_token'
+                message: 'Login successful'
+                status: 'success'
+        400:
+          description: 'Bad request'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: 'error'
+                message: 'Invalid credentials'
+  /customers:
+    get:
+      tags:
+        - customers
+      summary: 'Get All Customers'
+      description: 'Retrieve a list of all customers'
+      responses:
+        200:
+          description: 'Successful response'
+          schema:
+            type: 'array'
+            items:
+              $ref: '#/definitions/Customer'
+        401:
+          description: 'Unauthorized'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: 'error'
+                message: 'token is missing | token has expired | invalid token'
+        403:
+          description: 'Forbidden'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: 'error'
+                message: 'User does not have the required role'
+      security:
+        - bearerAuth: []
+definitions:
+  LoginCredentials:
+    type: 'object'
+    properties:
+      username:
+        type: 'string'
+        description: 'Username'
+      password:
+        type: 'string'
+        format: 'password'
+        description: 'Password'
+    required:
+      - 'username'
+      - 'password'
+  LoginResponse:
+    type: 'object'
+    properties:
+      auth_token:
+        type: 'string'
+        description: 'Authentication token'
+      message:
+        type: 'string'
+        description: 'Message indicating success or failure'
+      status:
+        type: 'string'
+        description: 'Status of the operation'
+    required:
+      - 'auth_token'
+      - 'message'
+  Error:
+    type: 'object'
+    properties:
+      status:
+        type: 'string'
+        description: 'Status of the error'
+      message:
+        type: 'string'
+        description: 'Description of the error'
+    required:
+      - 'status'
+      - 'message'
+  Customer:
+    type: 'object'
+    properties:
+      name:
+        type: 'string'
+        description: "Customer's name"
+      email:
+        type: 'string'
+        description: "Customer's email"
+      phone:
+        type: 'string'
+        description: "Customer's phone number"
+      id:
+        type: 'integer'
+        format: 'int64'
+        description: "Customer's unique ID"
+    required:
+      - 'name'
+      - 'email'
+      - 'phone'
+      - 'id'
