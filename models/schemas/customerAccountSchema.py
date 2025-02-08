@@ -6,6 +6,10 @@ class CustomerAccountSchema(ma.Schema):
     username = fields.String(required=True)
     password = fields.String(required=True)
     customer = fields.Nested('CustomerSchema')
+    role = fields.String(required=True)
+
+    class Meta:
+        fields = ('id', 'username', 'password', 'customer', 'role')
 
 customer_account_schema = CustomerAccountSchema()
 customer_accounts_schema = CustomerAccountSchema(many=True)

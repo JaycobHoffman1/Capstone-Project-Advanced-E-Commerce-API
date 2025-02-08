@@ -92,6 +92,9 @@ def init_roles_customers_data():
 
 def configure_rate_limit():
     limiter.limit('100 per day')(customer_blueprint)
+    limiter.limit('100 per day')(product_blueprint)
+    limiter.limit('100 per day')(order_blueprint)
+    limiter.limit('100 per day')(customer_account_blueprint)
 
 if __name__ == '__main__':
     app = create_app('DevelopmentConfig')

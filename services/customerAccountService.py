@@ -11,8 +11,9 @@ def find_all():
     return customer_accounts
 
 def login_customer(username, password):
-    user = (db.session.execute(db.select(CustomerAccount).where(CustomerAccount.username == username, CustomerAccount.password == password)).scalar_one_or_none())
+    user = (db.session.execute(db.select(CustomerAccount).where(CustomerAccount.username == username)).scalar_one_or_none())
     role_names = [role.role_name for role in user.roles]
+    print(user)
     if user:
         if check_password_hash(user.password, password):
             auth_token = encode_token(user.id, role_names)
