@@ -23,6 +23,19 @@ def find_by_id(id):
     product = productService.find_by_id(id)
     return product_schema.jsonify(product), 200
 
+def update(id):
+    try:
+        # Validate and deserialize input
+        product_data = product_schema.load(request.json)
+    except ValidationError as err:
+        return jsonify(err.messages), 400
+    
+    product = productService.update(product_data, id)
+    return product_schema.jsonify(product), 200
+
 def delete(id):
-    productService.delete(id)
-    return jsonify({ 'message': 'Product successfully deleted' }), 200
+    is_deleted = productService.delete(id)
+
+    if is_deleted is None:
+        return jsonify({ 'message': 'Product not found' }), 404
+    return jsonify({ 'message': is_deleted })

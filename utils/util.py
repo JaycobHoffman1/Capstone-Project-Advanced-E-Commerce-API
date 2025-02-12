@@ -12,7 +12,7 @@ def encode_token(user_id, role_names):
     payload = {
         'exp': datetime.now() + timedelta(days=1),
         'iat': datetime.now(),
-        'sub': user_id,
+        'sub': str(user_id),
         'roles': role_names
     }
 
@@ -27,7 +27,7 @@ def token_required(f):
             try:
                 token = request.headers['Authorization'].split(' ')[1]
                 print('Token:', token)
-                payload = jwt.decode(token, SECRET_KEY, algorithm='HS256')
+                payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             except jwt.ExpiredSignatureError:
                 return jsonify({ 'message': 'Token has expired', 'error': 'Unauthorized' }), 401
             except jwt.InvalidTokenError:
@@ -48,9 +48,8 @@ def role_required(role):
                 token = request.headers['Authorization'].split(' ')[1]
             if not token:
                 return jsonify({ 'message': 'Token is missing' }), 401
-            
             try: 
-                payload = jwt.decode(token, SECRET_KEY, algorithm='HS256')
+                payload = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
             except jwt.ExpiredSignatureError:
                 return jsonify({ 'message': 'Token has expired' }), 401
             except jwt.InvalidTokenError:

@@ -16,6 +16,27 @@ securityDefinitions:
     name: Authorization
     in: header
 paths:
+  /accounts:
+    get:
+      tags:
+        - 'accounts'
+      summary: 'List customer accounts'
+      description: 'Endpoint for listing customer accounts'
+      responses:
+        201:
+          description: 'OK'
+          schema:
+            $ref: '#/definitions/GetCustomersResponse'
+          examples:
+            application/json:
+              value:
+                id: 1
+                username: 'ctm1'
+                password: 'password1'
+                customer_id: 1
+                role: 'user'
+      security:
+        - bearerAuth: []
   /accounts/login:
     post:
       tags:
@@ -40,6 +61,40 @@ paths:
                 auth_token: 'example_auth_token'
                 message: 'Login successful'
                 status: 'success'
+        400:
+          description: 'Bad request'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+              value:
+                status: 'error'
+                message: 'Invalid credentials'
+  /accounts/id/<int:id>:
+    put:
+      tags:
+        - 'accounts'
+      summary: 'Update account endpoint'
+      description: 'Endpoint for updating customer accounts'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'ID of customer account to be updated'
+          required: true
+          schema: '#/definitions/AccountCredentials'
+      responses:
+        201:
+          description: 'Account successfully updated'
+          schema:
+            $ref: '#/definitions/AccountUpdatedResponse'
+          examples:
+            application/json:
+              value:
+                id: 1
+                username: 'ctm1'
+                password: 'password1'
+                customer_id: 1
+                role: 'user'
         400:
           description: 'Bad request'
           schema:
@@ -111,6 +166,60 @@ definitions:
     required:
       - 'auth_token'
       - 'message'
+  GetCustomersResponse:
+    type: 'object'
+    properties:
+      id:
+        type: 'integer'
+        description: 'Customer ID'
+      username:
+        type: 'string'
+        description: 'Customer username'
+      password:
+        type: 'string'
+        description: 'Customer password'
+      customer_id:
+        type: 'integer'
+        description: "ID of the account's associated customer"
+      role:
+        type: 'list'
+        description: 'role(s) the customer possesses'
+    required:
+      - 'id'
+      - 'username'
+      - 'password'
+      - 'role' 
+  AccountCredentials:
+    type: 'object'
+    properties:
+      id:
+        type: 'integer'
+        description: 'customer'
+    required:
+      - 'id'
+  AccountUpdatedResponse:
+    type: 'object'
+    properties:
+      id:
+        type: 'integer'
+        description: 'Customer ID'
+      username:
+        type: 'string'
+        description: 'Customer username'
+      password:
+        type: 'string'
+        description: 'Customer password'
+      customer_id:
+        type: 'integer'
+        description: "ID of the account's associated customer"
+      role:
+        type: 'list'
+        description: 'role(s) the customer possesses'
+    required:
+      - 'id'
+      - 'username'
+      - 'password'
+      - 'role' 
   Error:
     type: 'object'
     properties:

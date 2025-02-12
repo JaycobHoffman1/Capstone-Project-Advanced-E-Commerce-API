@@ -29,3 +29,28 @@ def find_all():
     query = select(Customer)
     customers = db.session.execute(query).scalars().all()
     return customers
+
+def find_by_id(id):
+    query = select(Customer).where(Customer.id == id).filter_by(id=id)
+    customer = db.session.execute(query).scalar_one_or_none()
+    return customer
+
+def update(customer_data, id):
+    with Session(db.engine) as session:
+        with session.begin():
+            customer = find_by_id(id)
+            customer.name = customer_data['name']
+            customer.email = customer_data['email']
+            customer.phone = customer_data['phone']
+            db.session.commit()
+        return customer
+    
+def delete(id):
+    with Session(db.engine) as session:
+        with session.begin():
+            customer = find_by_id(id)
+            if customer is None:
+                return None
+            db.session.delete(customer)
+        db.session.commit()
+    return 'Customer deleted'
