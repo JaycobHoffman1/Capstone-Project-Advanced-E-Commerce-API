@@ -107,3 +107,6 @@ with app.app_context():
     init_customers_info_data()
     init_roles_data()
     init_roles_customers_data()
+
+if __name__ == '__main__':
+    app.run(debug=True)
