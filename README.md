@@ -2,7 +2,7 @@
 
 - Author: Jaycob Hoffman
 
-- Date: 11 February 2025
+- Date: 28 February 2025
 
 # Description
 
@@ -47,4 +47,4 @@ For more detailed info on how to send requests, users can enter "/api/docs" foll
 
 #
 
-View the Advanced E-commerce API [GitHub Repository](https://github.com/JaycobHoffman1/Specialization-Mini-Project-Advanced-E-commerce-API)
+View the Advanced E-commerce API [GitHub Repository](https://github.com/JaycobHoffman1/Capstone-Project-Advanced-E-Commerce-API)
