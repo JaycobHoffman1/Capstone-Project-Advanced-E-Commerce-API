@@ -105,5 +105,6 @@ jobs:
       - name: Deploy to Production
         uses: JaycobHoffman1/render-deploy-action@v0.0.8
         with:
-          service-id: ${ secrets.SERVICE_ID }
-          api_key: ${ secrets.RENDER_API_KEY }
+          repository: JaycobHoffman/Specialization-Mini-Project-Advanced-E-commerce-API
+          service-id: ${{ secrets.SERVICE_ID }}
+          api_key: ${{ secrets.RENDER_API_KEY }}
