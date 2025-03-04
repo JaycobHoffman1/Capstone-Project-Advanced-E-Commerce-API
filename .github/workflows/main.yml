@@ -69,7 +69,7 @@ jobs:
 
       - name: Run tests with pytest
         run: |
-          python -m pytest tests/test-mock.py
+          python -m pytest test_mock.py
       
       - name: Run tests unittest
         run: python -m unittest discover -s tests -p 'test_*.py'
