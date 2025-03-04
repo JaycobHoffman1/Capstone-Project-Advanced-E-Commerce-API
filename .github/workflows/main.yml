@@ -19,8 +19,8 @@ jobs:
 
       - name: Install libpq-dev
         run: |
-          sudo apt-get-update
-          sudo api-get-install -y libpq-dev
+          sudo apt-get update
+          sudo api-get install -y libpq-dev
 
       - name: Create virtual environment
         run: |
