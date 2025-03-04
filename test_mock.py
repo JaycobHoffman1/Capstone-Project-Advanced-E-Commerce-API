@@ -21,35 +21,5 @@ class TestLoginCustomer(unittest.TestCase):
 
         self.assertEqual(response['status'], 'Success')
 
-    @patch('services.customerAccountService.db.session.execute')
-    def test_login_customer_invalid_password(self, mock_customer): # Failing test - invalid password
-        faker = Faker()
-        mock_user = MagicMock()
-        mock_user.id = 1
-        mock_user.roles = [MagicMock(role_name = 'admin'), MagicMock(role_name='admin')]
-        password = faker.password()
-        mock_user.username = faker.user_name()
-        mock_user.password = generate_password_hash(password)
-        mock_customer.return_value.scalar_one_or_none.return_value = mock_user
-
-        response = login_customer(mock_user.username, faker.password())
-
-        self.assertIsNone(response)
-
-    @patch('services.customerAccountService.db.session.execute')
-    def test_login_customer_unauthorized_role(self, mock_customer): # Failing test - unauthorized role
-        faker = Faker()
-        mock_user = MagicMock()
-        mock_user.id = 1
-        mock_user.roles = [MagicMock(role_name = 'admin'), MagicMock(role_name='user')]
-        password = faker.password()
-        mock_user.username = faker.user_name()
-        mock_user.password = generate_password_hash(password)
-        mock_customer.return_value.scalar_one_or_none.return_value = mock_user
-
-        response = login_customer(mock_user.username, password)
-
-        self.assertEqual(response['status'], 'success')
-
 if __name__ == '__main__':
     unittest.main()

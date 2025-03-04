@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=C:\Users\jayco\OneDrive\Documents\Coding Temple\specialization\module13\specialization-mini-project-advanced-e-commerce-api\venv
+set VIRTUAL_ENV=C:\Users\jayco\OneDrive\Documents\Coding Temple\specialization\module13\capstone-project-advanced-e-commerce-api\venv
 
 if not defined PROMPT set PROMPT=$P$G
 
